@@ -1,0 +1,43 @@
+# Ignore project files in the root
+/*.sln
+
+# Ignore local user Visual Studio files in any folder
+*.suo
+*.opensdf
+*.sdf
+*.vs
+
+# Standard binary files
+*.lib
+*.idb
+*.a
+*.dll
+*.exe
+*.png
+*.bz2
+*.psd
+*.gif
+*.zip
+*.tga
+*.dylib
+*.gz
+*.so
+*.jar
+*.mp4
+*.pak
+*.bmp
+*.obj
+*.pdb
+**/*.framework/**
+
+# Engine binaries
+**/Binaries/**
+
+# Derived data cache is never checked in
+**/DerivedDataCache/**
+
+# Engine intermediates
+**/Intermediate/**
+
+# Ignore any saved local files
+**/Saved/**
