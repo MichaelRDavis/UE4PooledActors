@@ -6,15 +6,19 @@
 #include "GameFramework/Actor.h"
 #include "PooledActor.generated.h"
 
+class UPooledActorComponent;
+
 UCLASS()
 class POOLEDACTORPLUGIN_API APooledActor : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:		
 	APooledActor();
 
 	virtual void BeginPlay() override;
+	virtual void Destroyed() override;
+ 	virtual void SetLifeSpan(float InLifespan) override;
 
 	UFUNCTION(BlueprintCallable, Category=PooledActor)
 	virtual void ActivateActor();
@@ -31,6 +35,15 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category=PooledActor)
 	bool IsActive() const;
 
+	void ReturnToOwningPool();
+
+	void SetOwningPool(UPooledActorComponent* NewOnwer);
+
+	inline UPooledActorComponent* GetOwningPool() const
+	{
+		return OwningPool;
+	}
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledActor)
 	float PooledActorLifespan;
@@ -40,4 +53,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledActor)
 	bool bAutoActivate;
+
+	/** True if this pooled actor is an orphan i.e. it's owning pool is destroyed */
+	UPROPERTY()
+	bool bIsOrphaned;
+
+private:
+	UPROPERTY()
+	UPooledActorComponent* OwningPool;
 };

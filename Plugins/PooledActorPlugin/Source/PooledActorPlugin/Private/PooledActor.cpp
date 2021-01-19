@@ -1,13 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PooledActor.h"
+#include "PooledActorComponent.h"
 
 APooledActor::APooledActor()
 {
-	bIsActive = true;
+	bIsActive = false;
 	bAutoActivate = false;
+	bIsOrphaned = false;
 
-	bReplicates = true;
+	bReplicates = false;
+	bNetUseOwnerRelevancy = false;
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 }
 
 void APooledActor::BeginPlay()
@@ -20,9 +25,21 @@ void APooledActor::BeginPlay()
 	}
 }
 
+void APooledActor::Destroyed()
+{
+	ReturnToOwningPool();
+}
+
+void APooledActor::SetLifeSpan(float InLifespan)
+{
+	
+}
+
 void APooledActor::ActivateActor()
 {
 	bIsActive = true;
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
 	SetActorTickEnabled(true);
 	SetReplicates(true);
 }
@@ -30,6 +47,8 @@ void APooledActor::ActivateActor()
 void APooledActor::DeactivateActor()
 {
 	bIsActive = false;
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
 	SetActorTickEnabled(false);
 	SetReplicates(false);
 }
@@ -47,5 +66,21 @@ void APooledActor::SetAutoActivate(bool bNewAutoActivate)
 bool APooledActor::IsActive() const
 {
 	return bIsActive;
+}
+
+void APooledActor::ReturnToOwningPool()
+{
+	if (OwningPool)
+	{
+		OwningPool->ReturnToOwningActorPool(this);
+	}
+
+	// If it's owning pool is destroyed then this pooled actor is now orphaned
+	bIsOrphaned = true;
+}
+
+void APooledActor::SetOwningPool(UPooledActorComponent* NewOnwer)
+{
+	OwningPool = NewOnwer;
 }
 

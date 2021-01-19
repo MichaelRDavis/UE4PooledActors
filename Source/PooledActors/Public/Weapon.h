@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+class UPooledProjectileComponent;
+
 UCLASS()
 class POOLEDACTORS_API AWeapon : public AActor
 {
@@ -13,4 +15,16 @@ class POOLEDACTORS_API AWeapon : public AActor
 	
 public:	
 	AWeapon();
+
+	virtual void PostInitializeComponents() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Pool")
+	UPooledProjectileComponent* ProjectilePool;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Weapon: Ammo")
+	int32 Ammo;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Fire();
+	void Fire_Implementation();
 };

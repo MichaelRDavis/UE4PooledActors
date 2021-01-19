@@ -12,3 +12,26 @@ APooledProjectile::APooledProjectile()
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->SetUpdatedComponent(CollisionComp);
 }
+
+void APooledProjectile::BeginPlay()
+{
+	Super::BeginPlay();
+
+	DeactivateActor();
+}
+
+void APooledProjectile::ActivateActor()
+{
+	Super::ActivateActor();
+
+	CollisionComp->SetActive(true);
+	ProjectileMovement->SetActive(true);
+}
+
+void APooledProjectile::DeactivateActor()
+{
+	Super::DeactivateActor();
+
+	CollisionComp->SetActive(false);
+	ProjectileMovement->SetActive(false);
+}

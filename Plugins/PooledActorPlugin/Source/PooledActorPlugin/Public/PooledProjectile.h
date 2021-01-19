@@ -15,7 +15,14 @@ class POOLEDACTORPLUGIN_API APooledProjectile : public APooledActor
 	GENERATED_BODY()
 	
 public:
+	typedef Super APooledActor;
+
 	APooledProjectile();
+
+	virtual void BeginPlay() override;
+
+	virtual void ActivateActor() override;
+	virtual void DeactivateActor() override;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Projectile, meta=(AllowPrivateAccess="true"))

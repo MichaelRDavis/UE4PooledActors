@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "PooledProjectileComponent.generated.h"
 
+class APooledProjectile;
+class APooledActorManager;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class POOLEDACTORPLUGIN_API UPooledProjectileComponent : public UActorComponent
 {
@@ -14,6 +17,22 @@ class POOLEDACTORPLUGIN_API UPooledProjectileComponent : public UActorComponent
 public:	
 	UPooledProjectileComponent();
 
+	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable, Category=PooledProjectile)
+	void InitializeProjectilePool(int32 InProjectilePoolSize);
+
+	UFUNCTION(BlueprintCallable, Category=PooledProjectile)
+	APooledProjectile* SpawnPooledProjectile(TSubclassOf<APooledProjectile> ProjectileClass, FTransform SpawnTransform);
+
 protected:
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledProjectile)
+	TSubclassOf<APooledProjectile> PooledProjectileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledProjectile)
+	int32 ProjectilePoolSize;
+
+private:
+	UPROPERTY()
+	APooledActorManager* LocalPooledActorManager;
 };
