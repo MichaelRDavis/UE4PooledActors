@@ -33,6 +33,5 @@ protected:
 
 public:
 	USphereComponent* GetCollisionComp() const {return CollisionComp;}
-
 	UProjectileMovementComponent* GetProjectileMovement() const {return ProjectileMovement;}
 };

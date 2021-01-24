@@ -32,7 +32,8 @@ void APooledActor::Destroyed()
 
 void APooledActor::SetLifeSpan(float InLifespan)
 {
-	
+	PooledActorLifespan = InLifespan;
+	GetWorldTimerManager().SetTimer(LifespanHandle, this, &APooledActor::DeactivateActor, PooledActorLifespan, false);
 }
 
 void APooledActor::ActivateActor()
@@ -72,7 +73,7 @@ void APooledActor::ReturnToOwningPool()
 {
 	if (OwningPool)
 	{
-		OwningPool->ReturnToOwningActorPool(this);
+		
 	}
 
 	// If it's owning pool is destroyed then this pooled actor is now orphaned

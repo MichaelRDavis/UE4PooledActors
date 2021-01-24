@@ -22,7 +22,7 @@ public:
 
 	void RemoveActorsFromPool();
 	
-	APooledActor* GetActorFromPool(TSubclassOf<APooledActor> ActorClass);
+	APooledActor* GetActorFromPool(int32 Amount);
 
 	bool DoesActorExistInPool(TSubclassOf<APooledActor> ActorClass) const;
 

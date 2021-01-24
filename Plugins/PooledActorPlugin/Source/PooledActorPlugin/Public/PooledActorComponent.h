@@ -24,22 +24,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category=PooledActor)
 	virtual void InitializeActorPool(int32 PoolSize);
 
-	/** Add a pooled actor to owned actor pool */
-	UFUNCTION(BlueprintCallable, Category=PooledActor)
-	void AddOwnedActorsToPool(APooledActor* Actor);
-
-	/** Returns owned pooled actors to owned actor pool */
-	UFUNCTION(BlueprintCallable, Category=PooledActor)
-	void ReturnOwnedActorsToPool();
-
-	/** Returns a owned pooled actor to the owning pool */
-	void ReturnToOwningActorPool(APooledActor* Actor);
-
 	/** Spawns a pooled actor from the owned actor pool */
 	UFUNCTION(BlueprintCallable, Category=PooledActor)
 	APooledActor* SpawnPooledActor(TSubclassOf<APooledActor> PooledActor, FTransform SpawnTransform, ESpawnActorCollisionHandlingMethod CollisionHandlingOverride, AActor* Owner);
 
 protected:
+	/** List of pooled actors owned by this pool */
+	UPROPERTY(BlueprintReadOnly, Category=PooledActor)
+	TArray<APooledActor*> OwnedActorPool; 
+
 	/** Class of pooled actor to spawn in actor pool */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledActor)
 	TSubclassOf<APooledActor> PooledActor;
@@ -51,13 +44,4 @@ protected:
 	/** True if actor pool should initialize pool when begin play is called for this component */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledActor)
 	bool bAutoInitialize;
-
-private:
-	/** List of pooled actors owned by this pool */
-	UPROPERTY()
-	TArray<APooledActor*> OwnedActorPool; 
-
-	/** Cached pointer to the pooled actor manager class */
-	UPROPERTY()
-	APooledActorManager* LocalPooledActorManager;
 };

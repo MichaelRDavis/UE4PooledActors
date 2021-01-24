@@ -44,6 +44,9 @@ public:
 		return OwningPool;
 	}
 
+private:
+	FTimerHandle LifespanHandle;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledActor)
 	float PooledActorLifespan;

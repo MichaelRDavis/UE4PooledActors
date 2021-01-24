@@ -15,14 +15,9 @@ void UPooledProjectileComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UPooledActorGameInstance* GameInst = Cast<UPooledActorGameInstance>(GetWorld()->GetGameInstance());
-	if (GameInst)
+	if (ProjectilePoolSize > 0 && bAutoInitialize)
 	{
-		LocalPooledActorManager = GameInst->GetPooledActorManager();
-		if (LocalPooledActorManager)
-		{
-			InitializeProjectilePool(ProjectilePoolSize);
-		}
+		InitializeProjectilePool(ProjectilePoolSize);
 	}
 }
 
@@ -31,28 +26,26 @@ void UPooledProjectileComponent::InitializeProjectilePool(int32 InProjectilePool
 	if (InProjectilePoolSize > 0)
 	{
 		ProjectilePoolSize = InProjectilePoolSize;
-		LocalPooledActorManager->AddActorsToPool(PooledProjectileClass, ProjectilePoolSize);
+
+		for (int32 i = 0; i < ProjectilePoolSize; i++)
+		{
+			APooledProjectile* Projectile = GetWorld()->SpawnActor<APooledProjectile>();
+			ProjectilePool.Add(Projectile);
+		}
 	}
 }
 
 APooledProjectile* UPooledProjectileComponent::SpawnPooledProjectile(TSubclassOf<APooledProjectile> ProjectileClass, FTransform SpawnTransform)
 {
-	APooledProjectile* Projectile = Cast<APooledProjectile>(LocalPooledActorManager->GetActorFromPool(ProjectileClass));
-	if (Projectile != nullptr)
+	for (APooledProjectile* Projectile : ProjectilePool)
 	{
-		Projectile->SetOwningPool(Cast<UPooledActorComponent>(this));	// This is a dirty cast
-		Projectile->SetActorTransform(SpawnTransform);
-		Projectile->ActivateActor();
-		return Projectile;
-	}
-	else
-	{
-		LocalPooledActorManager->AddActorsToPool(ProjectileClass, ProjectilePoolSize);
-		APooledProjectile* NewProjectile = Cast<APooledProjectile>(LocalPooledActorManager->GetActorFromPool(ProjectileClass));
-		if (NewProjectile != nullptr)
+		if (Projectile && !Projectile->IsActive())
 		{
-			NewProjectile->ActivateActor();
-			return NewProjectile;
+			Projectile->ActivateActor();
+			Projectile->SetOwningPool(Cast<UPooledActorComponent>(this));	// This is a dirty cast
+			Projectile->SetActorTransform(SpawnTransform);
+			Projectile->SetLifeSpan(5.0f);
+			return Projectile;
 		}
 	}
 

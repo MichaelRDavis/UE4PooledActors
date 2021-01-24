@@ -26,13 +26,15 @@ public:
 	APooledProjectile* SpawnPooledProjectile(TSubclassOf<APooledProjectile> ProjectileClass, FTransform SpawnTransform);
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=PooledProjectile)
+	TArray<APooledProjectile*> ProjectilePool;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledProjectile)
 	TSubclassOf<APooledProjectile> PooledProjectileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledProjectile)
 	int32 ProjectilePoolSize;
 
-private:
-	UPROPERTY()
-	APooledActorManager* LocalPooledActorManager;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PooledProjectile)
+	bool bAutoInitialize;
 };

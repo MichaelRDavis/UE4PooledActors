@@ -39,13 +39,12 @@ void APooledActorManager::RemoveActorsFromPool()
 	}
 }
 
-APooledActor* APooledActorManager::GetActorFromPool(TSubclassOf<APooledActor> ActorClass)
+APooledActor* APooledActorManager::GetActorFromPool(int32 Amount)
 {
-	for (int32 i = 0; i < ActorPool.Num(); i++)
+	for (int32 i = 0; i < Amount; i++)
 	{
-		if (ActorPool[i] && ActorPool[i]->IsA(ActorClass))
+		if (ActorPool[i])
 		{
-			ActorPool[i]->ActivateActor();
 			return ActorPool[i];
 		}
 	}

@@ -8,6 +8,10 @@
 
 class UPooledProjectileComponent;
 
+/**
+ * You can create a PooledActorComponent's on other Actors, though this is not recommended due to their volatility.  
+ * A best practice approach would be to store them on a persistent actor the persists for the lifecycle of the game e.g. the PlayerController class.
+ */
 UCLASS()
 class POOLEDACTORS_API AWeapon : public AActor
 {
