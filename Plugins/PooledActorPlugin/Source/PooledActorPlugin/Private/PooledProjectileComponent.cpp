@@ -3,8 +3,6 @@
 #include "PooledProjectileComponent.h"
 #include "PooledActorComponent.h"
 #include "PooledProjectile.h"
-#include "PooledActorGameInstance.h"
-#include "PooledActorManager.h"
 
 UPooledProjectileComponent::UPooledProjectileComponent()
 {

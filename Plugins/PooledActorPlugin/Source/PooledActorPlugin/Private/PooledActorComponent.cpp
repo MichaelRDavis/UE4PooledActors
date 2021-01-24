@@ -2,8 +2,6 @@
 
 #include "PooledActorComponent.h"
 #include "PooledActor.h"
-#include "PooledActorGameInstance.h"
-#include "PooledActorManager.h"
 
 UPooledActorComponent::UPooledActorComponent()
 {
